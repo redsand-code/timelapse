@@ -1,8 +1,11 @@
 import cv2
 import os
 
+
 # source: https://stackoverflow.com/a/44659589
-def image_resize(image, width = None, height = None, inter = cv2.INTER_AREA):
+
+
+def image_resize(image, width=None, height=None, inter=cv2.INTER_AREA):
     # initialize the dimensions of the image to be resized and
     # grab the image size
     dim = None
@@ -25,14 +28,14 @@ def image_resize(image, width = None, height = None, inter = cv2.INTER_AREA):
         dim = (width, int(h * r))
 
     # resize the image
-    resized = cv2.resize(image, dim, interpolation = inter)
+    resized = cv2.resize(image, dim, interpolation=inter)
     # return the resized image
     return resized
 
 
 class CFEVideoConf(object):
     # Standard Video Dimensions Sizes
-    STD_DIMENSIONS =  {
+    STD_DIMENSIONS = {
         "360p": (480, 360),
         "480p": (640, 480),
         "720p": (1280, 720),
@@ -42,15 +45,16 @@ class CFEVideoConf(object):
     # Video Encoding, might require additional installs
     # Types of Codes: http://www.fourcc.org/codecs.php
     VIDEO_TYPE = {
-        'avi': cv2.VideoWriter_fourcc(*'mp4v'),
+        'avi': cv2.VideoWriter_fourcc(*'XVID'),
         'mp4': cv2.VideoWriter_fourcc(*'mp4v'),
     }
 
-    width           = 640
-    height          = 480
-    dims            = (640, 480)
-    capture         = None
-    video_type      = None
+    width = 640
+    height = 480
+    dims = (640, 480)
+    capture = None
+    video_type = None
+
     def __init__(self, capture, filepath, res="480p", *args, **kwargs):
         self.capture = capture
         self.filepath = filepath
@@ -72,8 +76,15 @@ class CFEVideoConf(object):
         return width, height
 
     def get_video_type(self):
+
+        if self.filepath is None:
+            return 'mp4'
+
         filename, ext = os.path.splitext(self.filepath)
-        print(f"File ext {ext}")
+        ext = ext[1:]
+
+        print(f"File {filename} ext {ext}")
+
         if ext in self.VIDEO_TYPE:
-          return  self.VIDEO_TYPE[ext]
+            return self.VIDEO_TYPE[ext]
         return self.VIDEO_TYPE['mp4']
