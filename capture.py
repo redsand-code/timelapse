@@ -4,11 +4,10 @@ import cv2
 import time
 import datetime
 
-from utils import CFEVideoConf, image_resize
+from utils import CFEVideoConf, image_resize, write_time
 import glob
 
 cap = cv2.VideoCapture(0)
-
 
 frames_per_seconds = 20
 now = datetime.datetime.now()
@@ -25,7 +24,11 @@ hours_duration = 9
 seconds_duration = 20
 seconds_between_shots = 20
 
-if not os.path.exists(timelapse_img_dir):
+if not os.path.exists('saved-media/'):
+    os.mkdir('saved-media/')
+
+if not os.path.exists('images/'):
+    os.mkdir('images/')
     os.mkdir(timelapse_img_dir)
 
 #finish_time = now + datetime.timedelta(seconds=seconds_duration)
@@ -40,11 +43,13 @@ while datetime.datetime.now() < finish_time:
     ret, frame = cap.read()
     filename = f"{timelapse_img_dir}/{i}.jpg"
     i += 1
-    cv2.imwrite(filename, frame)
+    
+    write_time(frame, filename)
+
+    #cv2.imwrite(filename, frame)
     time.sleep(seconds_between_shots)
     if cv2.waitKey(20) & 0xFF == ord('q'):
         break
-
 
 def images_to_video(out, image_dir, clear_images=True):
     image_list = glob.glob(f"{image_dir}/*.jpg")

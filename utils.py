@@ -1,8 +1,28 @@
 import cv2
 import os
+import datetime
+
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
+
 
 
 # source: https://stackoverflow.com/a/44659589
+
+def write_time(frame, filename):
+    
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    img = Image.fromarray(frame)
+    idraw = ImageDraw.Draw(img)
+
+    img_now = datetime.datetime.now()
+    time_label = img_now.strftime("%I:%M:%S %p")
+    
+    ifont = ImageFont.truetype('Helvetica', 40)
+    idraw.text((1000, 600), time_label, font=ifont, fill =(200, 200, 200))
+
+    img.save(filename)
 
 
 def image_resize(image, width=None, height=None, inter=cv2.INTER_AREA):
