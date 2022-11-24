@@ -11,7 +11,7 @@ cap = cv2.VideoCapture(0)
 
 frames_per_seconds = 20
 now = datetime.datetime.now()
-data_path = now.strftime("%Y-%m-%d")
+data_path = now.strftime("%Y.%m.%d")
 save_path = f"saved-media/Ryder-Sleep-{data_path}.mp4"
 print(f"Saving video to {save_path}")
 
@@ -43,13 +43,14 @@ while datetime.datetime.now() < finish_time:
     ret, frame = cap.read()
     filename = f"{timelapse_img_dir}/{i}.jpg"
     i += 1
-    
+
     write_time(frame, filename)
 
     #cv2.imwrite(filename, frame)
     time.sleep(seconds_between_shots)
     if cv2.waitKey(20) & 0xFF == ord('q'):
         break
+
 
 def images_to_video(out, image_dir, clear_images=True):
     image_list = glob.glob(f"{image_dir}/*.jpg")
