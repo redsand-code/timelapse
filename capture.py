@@ -13,7 +13,6 @@ frames_per_seconds = 20
 now = datetime.datetime.now()
 data_path = now.strftime("%Y.%m.%d")
 save_path = f"saved-media/Ryder-Sleep-{data_path}.mp4"
-print(f"Saving video to {save_path}")
 
 config = CFEVideoConf(cap, filepath=save_path, res='720p')
 out = cv2.VideoWriter(save_path, config.video_type,
@@ -32,7 +31,11 @@ if not os.path.exists('images/'):
     os.mkdir(timelapse_img_dir)
 
 #finish_time = now + datetime.timedelta(seconds=seconds_duration)
-finish_time = now + datetime.timedelta(hours=hours_duration)
+#finish_time = now + datetime.timedelta(hours=hours_duration)
+
+tomorrow = now + datetime.timedelta(days=1)
+morning = datetime.time(6, 40)
+finish_time = datetime.datetime.combine(tomorrow.date(), morning)
 
 i = 0
 while datetime.datetime.now() < finish_time:
